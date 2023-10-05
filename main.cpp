@@ -1,9 +1,9 @@
+#include "Hangman.h"
 #include <string>
 #include <vector>
 #include <algorithm>
 #include <cctype>
 #include <iostream>
-
 using namespace std;
 
 char getLetterFromUser()
@@ -32,37 +32,14 @@ char getLetterFromUser()
     }
 }
 
-class Hangman
-{
-private:
-    const string word;
-    vector<bool> guessed;
-    string guesses;
-    int turn;
-    int hits;
-    int mistakes;
-
-public:
-    Hangman(const string &word);
-
-    static void printRules();
-    static void printTitle();
-
-    string getWord() const { return word; }
-    string getGuesses() const { return guesses; }
-    int getTurn() const { return turn; }
-    int getHits() const { return hits; }
-    int getMistakes() const { return mistakes; }
-
-    void guess(char letter);
-    void printMan() const;
-    bool hasWon() const;
-    bool hasLost() const;
-    string guessProgress() const;
-};
-
 Hangman::Hangman(const string &word)
     : word(word), guessed(word.size(), false), guesses(""), turn(1), hits(0), mistakes(0) {}
+
+string Hangman::getWord() const { return word; }
+string Hangman::getGuesses() const { return guesses; }
+int Hangman::getTurn() const { return turn; }
+int Hangman::getHits() const { return hits; }
+int Hangman::getMistakes() const { return mistakes; }
 
 void Hangman::guess(char letter)
 {
@@ -168,7 +145,7 @@ int main()
     getline(cin, showRules);
     if (showRules == "y")
         cout << endl;
-        Hangman::printRules();
+    Hangman::printRules();
     cout << endl;
 
     bool gameIsActive = true;
@@ -224,6 +201,4 @@ int main()
         }
 
     } while (gameIsActive);
-
-    return 0;
 }
