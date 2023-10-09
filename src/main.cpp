@@ -1,6 +1,9 @@
 #include "Hangman.h"
-#include <string>
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <random>
 using namespace std;
 
 char getLetterFromUser()
@@ -29,6 +32,31 @@ char getLetterFromUser()
     }
 }
 
+vector<string> loadWords(string file)
+{
+    vector<string> words;
+    ifstream inputFile(file);
+
+    if (!inputFile)
+        cout << "File load failed." << endl;
+
+    // Read words from file
+    string word;
+    while (getline(inputFile, word))
+        words.push_back(word);
+    inputFile.close();
+
+    return words;
+}
+
+int randomInt(int min, int max) {
+    random_device rd;
+    mt19937 rng(rd());
+    uniform_int_distribution<int> uni(min, max);
+    int randomIndex = uni(rng);
+    return randomIndex;
+}
+
 int main()
 {
     Hangman::printTitle();
@@ -38,15 +66,22 @@ int main()
     string showRules;
     getline(cin, showRules);
     if (showRules == "y")
+    {
         cout << endl;
-    Hangman::printRules();
+        Hangman::printRules();
+    }
     cout << endl;
+
+    // Load words
+    string wordFile = "/Users/hunterholland/Developer/projects/c++/hangman/src/words.txt";
+    vector<string> words = loadWords(wordFile);
 
     bool gameIsActive = true;
     do
     {
         // Pick word
-        string theWord = "expanse";
+        int randomIdx = randomInt(0, words.size() - 1);
+        string theWord = words[randomIdx];
         Hangman game(theWord);
 
         cout << "A random word has been chosen. It has " << theWord.length() << " letters." << endl
